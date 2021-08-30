@@ -1,0 +1,79 @@
+﻿<Window x:Class="LCRGameApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        DataContext="LCRGameApp.ViewModel.MainWindowViewModel"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="ToolWindow"
+        mc:Ignorable="d"
+        Title="LCR Dice Game" Height="250" Width="400">
+    <Window.Resources>
+        <ControlTemplate x:Key="ErrorImage">
+            <Viewbox>
+                <Canvas Width="50.25" Height="50.25">
+                    <Canvas.RenderTransform>
+                        <TranslateTransform X="0" Y="0"/>
+                    </Canvas.RenderTransform>
+                    <Canvas.Resources>
+                        <RadialGradientBrush x:Key="Svgid1" MappingMode="Absolute" Center="5.9912,4.9375" RadiusX="48.4666" RadiusY="48.4666">
+                            <RadialGradientBrush.GradientStops>
+                                <GradientStopCollection>
+                                    <GradientStop Color="#FFFFFF" Offset="0"/>
+                                    <GradientStop Color="#ED2024" Offset="1"/>
+                                </GradientStopCollection>
+                            </RadialGradientBrush.GradientStops>
+                        </RadialGradientBrush>
+                    </Canvas.Resources>
+                    <Ellipse Canvas.Left="0.819000000000003" Canvas.Top="0.822000000000003" Width="48.312" Height="48.312" Fill="{StaticResource Svgid1}"/>
+                    <Ellipse Canvas.Left="1.411000000000001" Canvas.Top="1.411000000000001" Width="47.428" Height="47.428" Stroke="#C02026" StrokeThickness="2.8217"/>
+                    <Canvas>
+                        <Path Fill="#FFFFFF" Data="M22.163 30.519L20.966 7.908h8.588l-1.196 22.611H22.163z"/>
+                    </Canvas>
+                    <Rectangle Canvas.Left="22.021" Canvas.Top="34.437" Width="6.771" Height="6.771" Fill="#FFFFFF"/>
+                </Canvas>
+            </Viewbox>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="TextBoxErrorTemplate">
+            <Border BorderBrush="Red" BorderThickness="0" >
+                <DockPanel DataContext="{Binding ElementName=MyAdorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                    <ContentControl ToolTip="{Binding}" Template="{StaticResource ErrorImage}" 
+                                DockPanel.Dock="Right" Margin="-18,0,0,0" Width="16" Height="16"/>
+                    <AdornedElementPlaceholder Margin="0,0,-6,0" Name="MyAdorner"/>
+                </DockPanel>
+            </Border>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="No. Of People" Margin="5" TextAlignment="Right" />
+        <TextBox Text="{Binding NumberOfPlayers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" Grid.Row="0" Grid.Column="1" Margin="5" TextAlignment="Left" PreviewTextInput="OnTextInput"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="No. Of Games" Margin="5" TextAlignment="Right" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+        <TextBox Text="{Binding NumberOfGames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" Grid.Row="1" Grid.Column="1" Margin="5" TextAlignment="Left" PreviewTextInput="OnTextInput"/>
+        <Button Content="_Start Game" Grid.Row="2" Grid.Column="2" Command="{Binding SimulateCommand}"/>
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="No. Of Turns" Margin="5" TextAlignment="Right" />
+        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding NumberOfTurns, Mode=OneWay}" Margin="5" TextAlignment="Left" />
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="Shortest Length Game" Margin="5" TextAlignment="Right"/>
+        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding ShortestGame, Mode=OneWay}" Margin="5" TextAlignment="Left" />
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="Longest Length Game" Margin="5" TextAlignment="Right"/>
+        <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding LongestGame, Mode=OneWay}" Margin="5" TextAlignment="Left" />
+        <TextBlock Grid.Row="7" Grid.Column="0" Text="Average Length Game" Margin="5" TextAlignment="Right"/>
+        <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding AverageGame, Mode=OneWay}" Margin="5" TextAlignment="Left" />
+    </Grid>
+</Window>
